@@ -1,12 +1,31 @@
 <header id="header" data-test="header" class="shared-header">
   <style>
     .shared-header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
       z-index: 1000;
-      background: #7f221b;
+      background: transparent;
       color: #fff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid transparent;
+      transform: translateY(0);
+      transition: background-color 220ms ease, border-color 220ms ease, transform 260ms ease;
+      will-change: transform, background-color;
+    }
+
+    .shared-header.is-solid {
+      background: #7f221b;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .shared-header.is-hidden {
+      transform: translateY(-110%);
+    }
+
+    .shared-header.is-instant-show {
+      transition: background-color 220ms ease, border-color 220ms ease, transform 0ms linear;
     }
 
     .shared-header-inner {
@@ -142,14 +161,83 @@
 
   <script>
     (function () {
-      var toggle = document.querySelector(".shared-menu-toggle");
-      var menu = document.getElementById("shared-mobile-menu");
+      var header = document.getElementById("header");
+      if (!header) {
+        return;
+      }
+
+      var toggle = header.querySelector(".shared-menu-toggle");
+      var menu = header.querySelector("#shared-mobile-menu");
+
       if (!toggle || !menu) {
         return;
       }
+
       toggle.addEventListener("click", function () {
         var open = menu.classList.toggle("is-open");
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      var lastY = window.scrollY || 0;
+      var heroThreshold = 40;
+      var ticking = false;
+
+      function computeHeroThreshold() {
+        var hero = document.querySelector("article.sections section[data-test='page-section']");
+        if (!hero) {
+          heroThreshold = 40;
+          return;
+        }
+
+        var heroHeight = hero.offsetHeight || 0;
+        heroThreshold = Math.max(40, heroHeight - header.offsetHeight);
+      }
+
+      function showHeaderInstantly() {
+        header.classList.add("is-instant-show");
+        header.classList.remove("is-hidden");
+        window.setTimeout(function () {
+          header.classList.remove("is-instant-show");
+        }, 80);
+      }
+
+      function updateHeaderState() {
+        var currentY = window.scrollY || 0;
+        var hasPassedHero = currentY > heroThreshold;
+        var isScrollingDown = currentY > lastY;
+        var delta = Math.abs(currentY - lastY);
+
+        header.classList.toggle("is-solid", hasPassedHero);
+
+        // Keep header visible at top and avoid jitter from tiny scroll changes.
+        if (currentY <= 12) {
+          header.classList.remove("is-hidden");
+        } else if (delta > 8) {
+          if (isScrollingDown) {
+            header.classList.add("is-hidden");
+          } else {
+            showHeaderInstantly();
+          }
+        }
+
+        lastY = currentY;
+        ticking = false;
+      }
+
+      computeHeroThreshold();
+      updateHeaderState();
+
+      window.addEventListener("scroll", function () {
+        if (ticking) {
+          return;
+        }
+        ticking = true;
+        window.requestAnimationFrame(updateHeaderState);
+      }, { passive: true });
+
+      window.addEventListener("resize", function () {
+        computeHeroThreshold();
+        updateHeaderState();
       });
     })();
   </script>

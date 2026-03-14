@@ -6,7 +6,7 @@
     { label: "Fashion inspo", href: "link-in-bio.html" },
     {
       label: "Pinterest",
-      href: "https://www.pinterest.com/",
+      href: "https://in.pinterest.com/zaaratahreem/",
       target: "_blank",
       rel: "noopener noreferrer",
     },
