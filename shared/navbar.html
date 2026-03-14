@@ -1,0 +1,156 @@
+<header id="header" data-test="header" class="shared-header">
+  <style>
+    .shared-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #7f221b;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .shared-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #site-title {
+      color: #fff;
+      text-decoration: none;
+      font-size: 42px;
+      line-height: 1;
+      font-family: "Instrument Serif", serif;
+      white-space: nowrap;
+    }
+
+    nav.header-nav-list {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .header-nav-item a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-family: "Roboto", sans-serif;
+      opacity: 0.95;
+    }
+
+    .header-nav-item a[aria-current="page"] {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .shared-cta {
+      text-decoration: none;
+      margin-left: 8px;
+      background: #ada79b;
+      color: #fff;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-family: "Roboto", sans-serif;
+      white-space: nowrap;
+    }
+
+    .header-menu {
+      display: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 12px 24px 16px;
+      background: #7f221b;
+    }
+
+    .header-menu-nav-wrapper {
+      display: grid;
+      gap: 10px;
+    }
+
+    .header-menu-nav-item-content {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-family: "Roboto", sans-serif;
+      opacity: 0.95;
+    }
+
+    .shared-menu-toggle {
+      display: none;
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-family: "Roboto", sans-serif;
+      text-transform: uppercase;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      #site-title {
+        font-size: 30px;
+      }
+
+      nav.header-nav-list,
+      .shared-cta {
+        display: none;
+      }
+
+      .shared-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .header-menu.is-open {
+        display: block;
+      }
+    }
+  </style>
+
+  <div class="shared-header-inner">
+    <a id="site-title" href="index.html">ZAARA TAHREEM</a>
+
+    <nav class="header-nav-list" aria-label="Primary navigation">
+      <!-- Filled by /shared/layout-loader.js -->
+    </nav>
+
+    <a class="shared-cta" href="appointments.html">Book a free discovery call</a>
+
+    <button class="shared-menu-toggle" type="button" aria-controls="shared-mobile-menu" aria-expanded="false">
+      Menu
+    </button>
+  </div>
+
+  <div class="header-menu" id="shared-mobile-menu">
+    <div class="header-menu-nav-wrapper">
+      <!-- Filled by /shared/layout-loader.js -->
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var toggle = document.querySelector(".shared-menu-toggle");
+      var menu = document.getElementById("shared-mobile-menu");
+      if (!toggle || !menu) {
+        return;
+      }
+      toggle.addEventListener("click", function () {
+        var open = menu.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    })();
+  </script>
+</header>
